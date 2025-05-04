@@ -4,6 +4,13 @@ document.getElementById('toolSelect').addEventListener('change', function () {
     .then(response => response.text())
     .then(html => {
       document.getElementById('toolContainer').innerHTML = html;
+
+      // Dynamically load corresponding JS
+      if (selectedTool.includes('cleaner.html')) {
+        const script = document.createElement('script');
+        script.src = 'tools/cleaner.js';
+        document.body.appendChild(script);
+      }
     })
     .catch(error => {
       console.error('Error loading tool:', error);
