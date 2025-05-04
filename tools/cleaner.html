@@ -2,21 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Status updates/Next → Status updates/Year-xx-yy Converter</title>
+  <title>Status updates/Next → Status updates/Year‑xx‑yy Converter</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
   <div class="container mt-4">
     <h2>🧹 Clean "Next" for New Summary Page</h2>
-    <p class="text-muted">This tool removes translation tags, <code>&lt;tvar&gt;</code> elements, and adds a footer for your next summary edition.</p>
-    
+    <p class="text-muted">
+      This tool removes translation tags, <code>&lt;tvar&gt;</code> elements,
+      and adds a footer for your next summary edition.
+    </p>
+
     <div class="mb-3">
-      <label for="inputText" class="form-label">Paste raw wikitext from <code>Status updates/Next</code>:</label>
+      <label for="inputText" class="form-label">
+        Paste raw wikitext from <code>Status updates/Next</code>:
+      </label>
       <textarea class="form-control" id="inputText" rows="15"></textarea>
     </div>
 
-    <button class="btn btn-primary mb-3" onclick="cleanContent()">Convert</button>
-    <button class="btn btn-secondary mb-3" id="copyBtn">Copy to Clipboard</button>
+    <button class="btn btn-primary mb-2" onclick="cleanContent()">Convert</button>
+    <button class="btn btn-secondary mb-2" id="copyBtn">Copy to Clipboard</button>
 
     <div class="mb-3">
       <label for="outputText" class="form-label">Cleaned output:</label>
