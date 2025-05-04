@@ -1,11 +1,13 @@
+/* css/style.css */
+
 /* Allow textareas to be resized both horizontally and vertically */
 textarea {
   resize: both;
   overflow: auto;
+  max-width: none; /* override any 100% width so you can drag wider */
 }
 
 /* Optional: improve overall font */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
