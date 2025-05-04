@@ -29,12 +29,11 @@ function cleanContent() {
 // Copy-to-clipboard setup
 document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copyBtn");
-  if (copyBtn) {
-    copyBtn.addEventListener("click", () => {
-      const text = document.getElementById("outputText").value;
-      navigator.clipboard.writeText(text)
-        .then(() => alert("Copied to clipboard!"))
-        .catch(err => console.error("Copy failed:", err));
-    });
-  }
+  if (!copyBtn) return;
+  copyBtn.addEventListener("click", () => {
+    const cleaned = document.getElementById("outputText").value;
+    navigator.clipboard.writeText(cleaned)
+      .then(() => alert("✅ Cleaned text copied to clipboard!"))
+      .catch(err => console.error("Copy failed:", err));
+  });
 });
