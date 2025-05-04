@@ -9,34 +9,18 @@
   <div class="container mt-4">
     <h2>🧹 Clean "Next" for New Summary Page</h2>
     <p class="text-muted">This tool removes translation tags, <code>&lt;tvar&gt;</code> elements, and adds a footer for your next summary edition.</p>
+    
     <div class="mb-3">
       <label for="inputText" class="form-label">Paste raw wikitext from <code>Status updates/Next</code>:</label>
       <textarea class="form-control" id="inputText" rows="15"></textarea>
     </div>
+
     <button class="btn btn-primary mb-3" onclick="cleanContent()">Convert</button>
+
     <div class="mb-3">
       <label for="outputText" class="form-label">Cleaned output:</label>
       <textarea class="form-control" id="outputText" rows="15" readonly></textarea>
     </div>
   </div>
-  <script>
-    function cleanContent() {
-      const input = document.getElementById('inputText').value;
-      let output = input;
-      output = output.replace(/<\/?translate>/g, '');
-      output = output.replace(/<languages\s*\/>/g, '');
-      output = output.replace(/<tvar\s+name="[^"]*">/g, '');
-      output = output.replace(/<\/tvar>/g, '');
-      output = output.replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, '');
-      const footer = `
-<div style="margin-top:10px; font-size:90%; padding-left:5px; font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">
-'''· [[d:Special:MyLanguage/Wikidata:Status updates/Previous|Previous issue]] · [[d:Special:MyLanguage/Wikidata:Status updates/Current|Full report]] · [[m:Global message delivery/Targets/Wikidata|Unsubscribe]] · [[:d:User:Mohammed Abdulai (WMDE)|Mohammed Abdulai (WMDE)]] [[:d:User talk:Mohammed Abdulai (WMDE)|talk]] · ~~~~'''
-</div>
-</div>
-</div>`;
-      output = output.trim() + '\n\n' + footer.trim();
-      document.getElementById('outputText').value = output;
-    }
-  </script>
 </body>
 </html>
