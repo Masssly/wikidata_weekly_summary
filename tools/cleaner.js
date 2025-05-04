@@ -14,7 +14,7 @@ function cleanContent() {
   let output = input
     .replace(/<\/?translate>/g, "")
     .replace(/<languages\s*\/>/g, "")
-    .replace(/<tvar\s+name="[^"]*">/g, "")
+    .replace(/<tvar\s+name\s*=\s*"[^"]*"\s*>/gi, "") // remove remove the tvars including variants of it
     .replace(/<\/tvar>/g, "")
     .replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, "")
     .trim();
