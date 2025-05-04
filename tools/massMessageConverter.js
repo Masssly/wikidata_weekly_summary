@@ -2,29 +2,30 @@
 
 /**
  * Cleans and converts the “Next” wikitext into MassMessage format:
- *  - Runs the same cleaning steps as cleanContent()
- *  - Converts all “= Section =” headers into bold inline headers
- *  - Appends the standard footer
+ *  1. Remove all translate, languages, and tvar tags (both opening & closing)
+ *  2. Remove the category footer tag
+ *  3. Convert any “= Section =” headings into bold inline ('''Section''')
+ *  4. Append the standard footer
  */
 function convertMassMessage() {
   let text = document.getElementById("inputTextMM").value;
 
-  // 1) Cleaning (same as cleaner)
+  // 1) Clean-up transformations (strip tags & category)
   text = text
-    .replace(/<\/?translate>/g, "")
-    .replace(/<languages\s*\/>/g, "")
-    .replace(/<tvar\s+name="[^"]*">/g, "")
-    .replace(/<\/tvar>/g, "")
+    .replace(/<\/?translate>/g, "")                    // remove <translate>…</translate>
+    .replace(/<languages\s*\/>/g, "")                   // remove <languages/>
+    .replace(/<tvar\s+name="[^"]*">/g, "")               // remove opening <tvar name="…">
+    .replace(/<\/tvar>/g, "")                           // remove closing </tvar>
     .replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, "")
     .trim();
 
-  // 2) Convert top‑level headers (= Section =) to '''Section'''
+  // 2) Convert level‑1 headers (= Section =) to '''Section'''
   text = text.replace(
     /^=\s*(.+?)\s*=$/gm,
     (match, p1) => `'''${p1}'''`
   );
 
-  // 3) Append footer
+  // 3) Append the standard footer
   const footer = `
 <div style="margin-top:10px; font-size:90%; padding-left:5px;
      font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">
@@ -42,7 +43,7 @@ function convertMassMessage() {
 
 /**
  * Sets up the Copy to Clipboard button for the MassMessage converter,
- * copying only the converted output and showing a brief confirmation.
+ * copying only the converted output and showing a brief “✅ Copied!” confirmation.
  */
 document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copyMMBtn");
