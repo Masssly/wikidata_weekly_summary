@@ -1,3 +1,13 @@
+/**
+ * convertMassMessage()
+ * ----------------------
+ * 1. Reads raw wikitext from #inputTextMM
+ * 2. Runs the same cleaning steps as cleanContent()
+ * 3. Converts any top‑level headings (= Heading =) to bold inline ('''Heading''')
+ * 4. Appends the standard weekly‑summary footer
+ * 5. Places the final text into #outputTextMM
+ */
+
 function convertMassMessage() {
   let text = document.getElementById("inputTextMM").value;
 
@@ -43,3 +53,4 @@ function convertMassMessage() {
   // Combine header, cleaned text, and footer
   document.getElementById("outputTextMM").value = header + "\n\n" + text + "\n\n" + footer;
 }
+
