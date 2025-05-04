@@ -1,31 +1,34 @@
 // tools/massMessageConverter.js
 
 /**
- * Cleans and converts the “Next” wikitext into MassMessage format:
- *  1. Remove all translate, languages, and tvar tags (both opening & closing)
- *  2. Remove the category footer tag
- *  3. Convert any “= Section =” headings into bold inline ('''Section''')
- *  4. Append the standard footer
+ * convertMassMessage()
+ * ----------------------
+ * 1. Reads raw wikitext from #inputTextMM
+ * 2. Runs the same cleaning steps as cleanContent()
+ * 3. Converts any top‑level headings (= Heading =) to bold inline ('''Heading''')
+ * 4. Appends the standard weekly‑summary footer
+ * 5. Places the final text into #outputTextMM
  */
 function convertMassMessage() {
+  // 1. Grab the raw input
   let text = document.getElementById("inputTextMM").value;
 
-  // 1) Clean-up transformations (strip tags & category)
+  // 2. Clean up translate, languages, tvar tags, and category marker
   text = text
-    .replace(/<\/?translate>/g, "")                    // remove <translate>…</translate>
-    .replace(/<languages\s*\/>/g, "")                   // remove <languages/>
-    .replace(/<tvar\s+name\s*=\s*"[^"]*"\s*>/gi, "")  // remove opening <tvar name="…">
-    .replace(/<\/tvar>/g, "")                           // remove closing </tvar>
+    .replace(/<\/?translate>/gi, "")
+    .replace(/<languages\s*\/>/gi, "")
+    .replace(/<tvar\s+name\s*=\s*"[^"]*"\s*>/gi, "")
+    .replace(/<\/tvar>/gi, "")
     .replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, "")
     .trim();
 
-  // 2) Convert level‑1 headers (= Section =) to '''Section'''
+  // 3. Convert headings: = Section = → '''Section'''
   text = text.replace(
-    /^=\s*(.+?)\s*=$/gm,
-    (match, p1) => `'''${p1}'''`
+    /^\=\s*(.*?)\s*\=$/gm,
+    (match, headingText) => `'''${headingText}'''`
   );
 
-  // 3) Append the standard footer
+  // 4. Define and append the footer
   const footer = `
 <div style="margin-top:10px; font-size:90%; padding-left:5px;
      font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">
@@ -42,11 +45,13 @@ function convertMassMessage() {
 }
 
 /**
- * Sets up the Copy to Clipboard button for the MassMessage converter,
- * copying only the converted output and showing a brief “✅ Copied!” confirmation.
+ * Copy button setup for MassMessage
+ * -----------------------------------
+ * Copies only the converted output (#outputTextMM) and flashes
+ * a “✅ Copied!” confirmation on the button itself.
  */
 document.addEventListener("DOMContentLoaded", () => {
-  const copyBtn = document.getElementById("copyMMBtn");
+  const copyBtn  = document.getElementById("copyMMBtn");
   const outputTA = document.getElementById("outputTextMM");
   if (!copyBtn || !outputTA) return;
 
@@ -56,9 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     navigator.clipboard.writeText(converted)
       .then(() => {
-        const orig = copyBtn.textContent;
+        // flash confirmation
+        const originalLabel = copyBtn.textContent;
         copyBtn.textContent = "✅ Copied!";
-        setTimeout(() => copyBtn.textContent = orig, 1500);
+        setTimeout(() => copyBtn.textContent = originalLabel, 1500);
       })
       .catch(err => {
         console.error("Copy failed:", err);
