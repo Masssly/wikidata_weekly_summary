@@ -1,8 +1,10 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Allow textareas to be resized both horizontally and vertically */
+textarea {
+  resize: both;
+  overflow: auto;
 }
 
-textarea {
-  resize: both;   /* allows drag to resize horizontally and vertically */
-  overflow: auto; /* shows scrollbars if content overflows */
+/* Optional: improve overall font */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
