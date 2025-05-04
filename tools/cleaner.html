@@ -20,13 +20,16 @@
       <textarea class="form-control" id="inputText" rows="15"></textarea>
     </div>
 
-    <button class="btn btn-primary mb-2" onclick="cleanContent()">Convert</button>
-    <button class="btn btn-secondary mb-2" id="copyBtn">Copy to Clipboard</button>
+    <button class="btn btn-primary mb-3" onclick="cleanContent()">Convert</button>
 
+    <!-- Cleaned output area -->
     <div class="mb-3">
       <label for="outputText" class="form-label">Cleaned output:</label>
       <textarea class="form-control" id="outputText" rows="15" readonly></textarea>
     </div>
+
+    <!-- COPY button placed *after* the output box -->
+    <button class="btn btn-secondary mb-3" id="copyBtn">Copy to Clipboard</button>
   </div>
 </body>
 </html>
