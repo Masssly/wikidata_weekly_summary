@@ -1,5 +1,14 @@
 // tools/cleaner.js
 
+/**
+ * Cleans the “Next” wikitext:
+ *  - Removes <translate>…</translate> tags
+ *  - Removes <languages/> tags
+ *  - Strips out <tvar name="…">…</tvar> elements
+ *  - Removes the category footer tag
+ *  - Trims whitespace
+ *  - Appends the standard footer
+ */
 function cleanContent() {
   const input = document.getElementById("inputText").value;
   let output = input
@@ -20,21 +29,33 @@ function cleanContent() {
 [[:d:User talk:Mohammed Abdulai (WMDE)|talk]] · ~~~~'''
 </div>
 </div>
-</div>`;
+</div>`.trim();
 
-  output += "\n\n" + footer.trim();
-  document.getElementById("outputText").value = output;
+  document.getElementById("outputText").value = output + "\n\n" + footer;
 }
 
-// Copy-to-clipboard setup
+/**
+ * Sets up the Copy to Clipboard button to copy only the cleaned output
+ * and shows a “✅ Copied!” confirmation.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   const copyBtn = document.getElementById("copyBtn");
-  if (!copyBtn) return;
+  const outputTA = document.getElementById("outputText");
+  if (!copyBtn || !outputTA) return;
+
   copyBtn.addEventListener("click", () => {
-    const cleaned = document.getElementById("outputText").value;
+    const cleaned = outputTA.value;
+    if (!cleaned) return;
+
     navigator.clipboard.writeText(cleaned)
-      .then(() => alert("✅ Cleaned text copied to clipboard!"))
-      .catch(err => console.error("Copy failed:", err));
+      .then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = "✅ Copied!";
+        setTimeout(() => copyBtn.textContent = orig, 1500);
+      })
+      .catch(err => {
+        console.error("Copy failed:", err);
+        alert("Copy failed—see console for details");
+      });
   });
 });
-
