@@ -1,24 +1,30 @@
 // tools/massMessageConverter.js
 
+/**
+ * Cleans and converts the “Next” wikitext into MassMessage format:
+ *  - Runs the same cleaning steps as cleanContent()
+ *  - Converts all “= Section =” headers into bold inline headers
+ *  - Appends the standard footer
+ */
 function convertMassMessage() {
   let text = document.getElementById("inputTextMM").value;
 
-  // 1) Run all cleaner transformations:
+  // 1) Cleaning (same as cleaner)
   text = text
-    .replace(/<\/?translate>/g, '')
-    .replace(/<languages\s*\/>/g, '')
-    .replace(/<tvar\s+name="[^"]*">/g, '')
-    .replace(/<\/tvar>/g, '')
-    .replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, '')
+    .replace(/<\/?translate>/g, "")
+    .replace(/<languages\s*\/>/g, "")
+    .replace(/<tvar\s+name="[^"]*">/g, "")
+    .replace(/<\/tvar>/g, "")
+    .replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, "")
     .trim();
 
-  // 2) Convert level‑1 headers (= Header =) to bold inline:
+  // 2) Convert top‑level headers (= Section =) to '''Section'''
   text = text.replace(
     /^=\s*(.+?)\s*=$/gm,
     (match, p1) => `'''${p1}'''`
   );
 
-  // 3) Append the footer (same as cleaner)
+  // 3) Append footer
   const footer = `
 <div style="margin-top:10px; font-size:90%; padding-left:5px;
      font-family:Georgia, Palatino, Palatino Linotype, Times, Times New Roman, serif;">
@@ -34,14 +40,28 @@ function convertMassMessage() {
   document.getElementById("outputTextMM").value = text + "\n\n" + footer;
 }
 
-// Copy‑to‑clipboard for the converted output only
+/**
+ * Sets up the Copy to Clipboard button for the MassMessage converter,
+ * copying only the converted output and showing a brief confirmation.
+ */
 document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("copyMMBtn");
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    const output = document.getElementById("outputTextMM").value;
-    navigator.clipboard.writeText(output)
-      .then(() => alert("✅ Converted text copied!"))
-      .catch(err => console.error("Copy failed:", err));
+  const copyBtn = document.getElementById("copyMMBtn");
+  const outputTA = document.getElementById("outputTextMM");
+  if (!copyBtn || !outputTA) return;
+
+  copyBtn.addEventListener("click", () => {
+    const converted = outputTA.value;
+    if (!converted) return;
+
+    navigator.clipboard.writeText(converted)
+      .then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = "✅ Copied!";
+        setTimeout(() => copyBtn.textContent = orig, 1500);
+      })
+      .catch(err => {
+        console.error("Copy failed:", err);
+        alert("Copy failed—see console for details");
+      });
   });
 });
