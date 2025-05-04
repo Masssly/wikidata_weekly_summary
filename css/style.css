@@ -1,6 +1,8 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 textarea {
-  font-family: monospace;
+  resize: both;   /* allows drag to resize horizontally and vertically */
+  overflow: auto; /* shows scrollbars if content overflows */
 }
