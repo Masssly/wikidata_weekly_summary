@@ -1,12 +1,14 @@
 document.getElementById('toolSelect').addEventListener('change', function () {
   const selectedTool = this.value;
+  const container = document.getElementById('toolContainer');
+
   fetch(selectedTool)
     .then(response => response.text())
     .then(html => {
-      document.getElementById('toolContainer').innerHTML = html;
+      container.innerHTML = html;
 
-      // Dynamically load corresponding JS
-      if (selectedTool.includes('cleaner.html')) {
+      // If the cleaner tool is loaded, dynamically load its JS
+      if (selectedTool.endsWith('cleaner.html')) {
         const script = document.createElement('script');
         script.src = 'tools/cleaner.js';
         document.body.appendChild(script);
@@ -14,6 +16,6 @@ document.getElementById('toolSelect').addEventListener('change', function () {
     })
     .catch(error => {
       console.error('Error loading tool:', error);
-      document.getElementById('toolContainer').innerHTML = '<p class="text-danger">Failed to load tool.</p>';
+      container.innerHTML = '<p class="text-danger">Failed to load tool.</p>';
     });
 });
