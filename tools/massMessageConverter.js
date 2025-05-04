@@ -14,7 +14,7 @@ function convertMassMessage() {
   text = text
     .replace(/<\/?translate>/g, "")                    // remove <translate>…</translate>
     .replace(/<languages\s*\/>/g, "")                   // remove <languages/>
-    .replace(/<tvar\s+name="[^"]*">/g, "")               // remove opening <tvar name="…">
+    .replace(/<tvar\s+name\s*=\s*"[^"]*"\s*>/gi, "")  // remove opening <tvar name="…">
     .replace(/<\/tvar>/g, "")                           // remove closing </tvar>
     .replace(/\[\[Category:Wikidata status updates\|\s*\]\]/g, "")
     .trim();
